@@ -3,6 +3,6 @@
     - id: dsh-dsml-artifact-guard
       name: '@goodandready/dsh-dsml-artifact-guard'
       config:
-        mode: audit
+        mode: sanitize
         providerId: opencode-go
         modelId: deepseek-v4-flash
