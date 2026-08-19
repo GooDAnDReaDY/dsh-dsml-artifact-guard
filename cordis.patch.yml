@@ -1,0 +1,8 @@
+# Host-only DSH bundle.
+- insert:
+    - id: dsh-dsml-artifact-guard
+      name: '@goodandready/dsh-dsml-artifact-guard'
+      config:
+        mode: audit
+        providerId: opencode-go
+        modelId: deepseek-v4-flash

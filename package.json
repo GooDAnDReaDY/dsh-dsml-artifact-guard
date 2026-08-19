@@ -1,0 +1,1 @@
+{"name":"@goodandready/dsh-dsml-artifact-guard","version":"0.1.0","type":"module","main":"lib/index.js","scripts":{"check":"node --check lib/index.js","test":"node --test"},"dsh":{"bundle":{"patch":"./cordis.patch.yml"}},"peerDependencies":{"@deepseek-ai/cordis":"^4.0.1","@deepseek-ai/schemastery":"^3.18.1"}}
