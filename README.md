@@ -48,3 +48,7 @@ matching, and the synchronous Cordis hook contract.
 - Gitea issue #4: synchronous `llm/stream` hook (`stream is not async iterable`).
 - Gitea issue #6: package license, ignore rules, and deterministic package
   contents.
+
+## Release v0.1.1
+
+This public hotfix release packages the synchronous stream-hook repair and the deterministic package hygiene changes from Gitea PR #7. It is compatible with DeepSeek Harness 0.1.2 alpha/rc web profiles and keeps the fail-open, provider/model-scoped sanitizer behavior described above.
