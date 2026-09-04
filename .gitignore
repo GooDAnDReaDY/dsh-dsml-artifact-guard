@@ -1,0 +1,15 @@
+
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+*.tgz
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials/
+secrets/
