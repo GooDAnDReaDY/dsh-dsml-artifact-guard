@@ -1,8 +1,5 @@
-# Host-only DSH bundle.
+# Host-only DSH bundle. Defaults live in Config schema (mode=audit).
 - insert:
     - id: dsh-dsml-artifact-guard
       name: '@goodandready/dsh-dsml-artifact-guard'
-      config:
-        mode: sanitize
-        providerId: opencode-go
-        modelId: deepseek-v4-flash
+      config: {}

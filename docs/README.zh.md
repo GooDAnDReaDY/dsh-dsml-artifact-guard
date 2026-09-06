@@ -150,3 +150,9 @@ npm run check
 ## 📄 开源许可证
 
 MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
+
+
+## Changed in v0.1.3
+
+#8: wrap `llm/stream` in `ctx.effect` so unload unsubscribes.
+#9: `cordis.patch.yml` uses `config: {}` — schema defaults (`mode: audit`, provider/model ids) apply unless overridden in host config.
