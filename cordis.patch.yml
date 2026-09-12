@@ -1,4 +1,4 @@
-# Host-only DSH bundle. Defaults live in Config schema (mode=audit).
+# Host-only DSH bundle. Defaults live in Config schema (mode=sanitize).
 - insert:
     - id: dsh-dsml-artifact-guard
       name: '@goodandready/dsh-dsml-artifact-guard'
