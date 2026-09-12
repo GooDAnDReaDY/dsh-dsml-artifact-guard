@@ -21,6 +21,16 @@
   <a href="README.zh.md"><b>🇨🇳 中文说明</b></a>
 </p>
 
+<table align="center">
+  <tr>
+    <td align="center">
+      ⭐ <strong>如果您喜欢这个插件，请在 GitHub 上为它点亮 Star</strong> — 这能让我知道插件对您有用，并鼓励我继续开发和维护它。
+      <br><br>
+      🐛 <strong>如果您发现 Bug 或希望增加功能</strong>，请使用任意语言在 GitHub 上提交 Issue — 我会评估您的建议，并在后续版本中实现有价值的改进。
+    </td>
+  </tr>
+</table>
+
 </div>
 
 ---
@@ -64,15 +74,15 @@ graph TD
         Audit["审计模式 (Audit)<br/>(仅记录日志不改动文本)"]
     end
 
-    Turn -->|ctx.on('llm/stream')| Hook
+    Turn -->|llm/stream 拦截| Hook
     Hook --> ScopeCheck
     ScopeCheck -->|未命中| PassThrough
     ScopeCheck -->|命中| Buffer
     PassThrough --> ChatUI
     Buffer --> Detector
     Detector -->|无异常| ChatUI
-    Detector -->|检出残留 & sanitize| Sanitize --> ChatUI
-    Detector -->|检出残留 & audit| Audit --> ChatUI
+    Detector -->|检出残留: sanitize| Sanitize --> ChatUI
+    Detector -->|检出残留: audit| Audit --> ChatUI
 ```
 
 ---
@@ -162,3 +172,7 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 #11: 将 schema 中 `mode` 默认值设置为 `sanitize`，实现开箱即用的清理保护。
 #11: 在 `sanitizeDsmlArtifacts` 中实现严格的开闭标签深度平衡，精准处理正文中已闭合标签与末尾泄漏标签。
 #11: 纳入 `package-lock.json` 跟踪并完善设计契约。
+
+## v0.1.5 变更说明
+
+#15: 修复 GitHub 上 Mermaid 流程图边标签语法解析错误，并补全标准项目支持引导区。
