@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://goodandready.app/"><img src="https://img.shields.io/badge/All_Author_Projects-goodandready.app-ff4500.svg?style=for-the-badge&logo=rocket&logoColor=white&labelColor=1a1a2e" alt="GoodAndReady Showcase"></a>
+  <a href="https://goodandready.app/"><img src="https://img.shields.io/badge/🌐_DSH_Hub-goodandready.app-ff4500.svg?style=for-the-badge&labelColor=1a1a2e" alt="GoodAndReady Showcase"></a>
 </p>
 
 <p align="center">
@@ -20,6 +20,16 @@
   <a href="docs/README.ru.md"><b>🇷🇺 Русский</b></a> •
   <a href="docs/README.zh.md"><b>🇨🇳 中文说明</b></a>
 </p>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      ⭐ <strong>If you like this plugin, please star it on GitHub</strong> — it shows me that the plugin is useful to you and motivates me to keep developing it.
+      <br><br>
+      🐛 <strong>If you find a bug or would like to request a feature</strong>, open a GitHub issue in any language — I will review your proposal and implement useful suggestions in a future plugin version.
+    </td>
+  </tr>
+</table>
 
 </div>
 
@@ -64,15 +74,15 @@ graph TD
         Audit["Audit Mode<br/>(Emits ctx.logger warning only)"]
     end
 
-    Turn -->|ctx.on('llm/stream')| Hook
+    Turn -->|llm/stream hook| Hook
     Hook --> ScopeCheck
     ScopeCheck -->|No| PassThrough
     ScopeCheck -->|Yes| Buffer
     PassThrough --> ChatUI
     Buffer --> Detector
     Detector -->|No Artifact| ChatUI
-    Detector -->|Artifact Found & sanitize| Sanitize --> ChatUI
-    Detector -->|Artifact Found & audit| Audit --> ChatUI
+    Detector -->|Artifact detected: sanitize| Sanitize --> ChatUI
+    Detector -->|Artifact detected: audit| Audit --> ChatUI
 ```
 
 ---
@@ -162,3 +172,7 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 #11: schema `mode` default set to `sanitize` for out-of-the-box protection.
 #11: robust open/close tag balancing in `sanitizeDsmlArtifacts` to handle prior closed blocks in prose.
 #11: repo hygiene with tracked `package-lock.json` and design contract.
+
+## Changed in v0.1.5
+
+#15: fix Mermaid diagram edge label syntax on GitHub and add mandatory repository support block.

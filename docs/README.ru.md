@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://goodandready.app/"><img src="https://img.shields.io/badge/Все_проекты_автора-goodandready.app-ff4500.svg?style=for-the-badge&logo=rocket&logoColor=white&labelColor=1a1a2e" alt="Все проекты автора"></a>
+  <a href="https://goodandready.app/"><img src="https://img.shields.io/badge/🌐_DSH_Hub-goodandready.app-ff4500.svg?style=for-the-badge&labelColor=1a1a2e" alt="GoodAndReady Showcase"></a>
 </p>
 
 <p align="center">
@@ -20,6 +20,16 @@
   <a href="README.ru.md"><b>🇷🇺 Русский</b></a> •
   <a href="README.zh.md"><b>🇨🇳 中文说明</b></a>
 </p>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      ⭐ <strong>Если вам нравится этот плагин, поставьте ему звезду на GitHub</strong> — это покажет мне, что плагин вам полезен, и будет мотивировать меня развивать его дальше.
+      <br><br>
+      🐛 <strong>Если вы нашли баг или хотите предложить новый функционал</strong>, создайте issue на GitHub на любом языке — я рассмотрю ваше предложение и реализую полезные идеи в одной из следующих версий плагина.
+    </td>
+  </tr>
+</table>
 
 </div>
 
@@ -64,15 +74,15 @@ graph TD
         Audit["Режим Audit<br/>(Логирование через ctx.logger)"]
     end
 
-    Turn -->|ctx.on('llm/stream')| Hook
+    Turn -->|Хук llm/stream| Hook
     Hook --> ScopeCheck
     ScopeCheck -->|Нет| PassThrough
     ScopeCheck -->|Да| Buffer
     PassThrough --> ChatUI
     Buffer --> Detector
     Detector -->|Нет артефакта| ChatUI
-    Detector -->|Артефакт найден & sanitize| Sanitize --> ChatUI
-    Detector -->|Артефакт найден & audit| Audit --> ChatUI
+    Detector -->|Артефакт найден: sanitize| Sanitize --> ChatUI
+    Detector -->|Артефакт найден: audit| Audit --> ChatUI
 ```
 
 ---
@@ -162,3 +172,7 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 #11: значение `mode` по умолчанию в схеме переведено на `sanitize` для защиты «из коробки».
 #11: балансировка открывающих и закрывающих тегов в `sanitizeDsmlArtifacts` при наличии закрытых блоков в прозе.
 #11: гигиена репозитория с отслеживаемым `package-lock.json` и дизайн-контрактом.
+
+## Изменения в v0.1.5
+
+#15: исправлен синтаксис стрелок диаграммы Mermaid на GitHub и добавлен обязательный блок поддержки репозитория.
