@@ -156,3 +156,9 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 
 #8: wrap `llm/stream` in `ctx.effect` so unload unsubscribes.
 #9: `cordis.patch.yml` uses `config: {}` — schema defaults (`mode: audit`, provider/model ids) apply unless overridden in host config.
+
+## Изменения в v0.1.4
+
+#11: значение `mode` по умолчанию в схеме переведено на `sanitize` для защиты «из коробки».
+#11: балансировка открывающих и закрывающих тегов в `sanitizeDsmlArtifacts` при наличии закрытых блоков в прозе.
+#11: гигиена репозитория с отслеживаемым `package-lock.json` и дизайн-контрактом.
