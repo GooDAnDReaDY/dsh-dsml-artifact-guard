@@ -17,8 +17,8 @@
 
 <p align="center">
   <a href="README.md"><b>🇬🇧 English</b></a> •
-  <a href="docs/README.ru.md"><b>🇷🇺 Русский</b></a> •
-  <a href="docs/README.zh.md"><b>🇨🇳 中文说明</b></a>
+  <a href="README.ru.md"><b>🇷🇺 Русский</b></a> •
+  <a href="README.zh.md"><b>🇨🇳 中文说明</b></a>
 </p>
 
 <table align="center">
@@ -160,7 +160,6 @@ npm run check
 ## 📄 License
 
 MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
-
 
 ## Changed in v0.1.3
 
