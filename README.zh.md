@@ -175,3 +175,11 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 ## v0.1.5 变更说明
 
 #15: 修复 GitHub 上 Mermaid 流程图边标签语法解析错误，并补全标准项目支持引导区。
+
+## v0.2.0 更新日志
+
+- #17: 在 settings.plugin.item 插槽中注册原生设置卡片，支持快照状态检查与禁用警示横幅。
+- #18: 一键在线更新模块，提供 /api/dsh-dsml-artifact-guard/update 端点与同源/回环安全校验。
+- #19: 清理公开代码仓库中的内部 AGENTS.md 规则文件并更新 .gitignore。
+- #20: 优化 npm 发布包白名单，移除冗余 README 副本，安装包体积缩减约 40%FD。
+- #21: 清理源代码目录中的旧版本 .tgz 打包归档。
