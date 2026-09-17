@@ -183,3 +183,9 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 - #19: 清理公开代码仓库中的内部 AGENTS.md 规则文件并更新 .gitignore。
 - #20: 优化 npm 发布包白名单，移除冗余 README 副本，安装包体积缩减约 40%FD。
 - #21: 清理源代码目录中的旧版本 .tgz 打包归档。
+
+## v0.2.1 更新日志
+
+- #26：配置面板全量主题语义化规范（`lib/client.js`）：彻底清除全部 42 处硬编码 hex/rgba 颜色，全面接入 `--dsw-alias-...` 核心变量与 `color-mix()`，保障深色与浅色主题下的极致对比度与可读性。
+- #26：新增前端主题规范自动化回归防护测试（`test/theme.test.js`）。
+- #26：修复 `.gitignore` 对 `AGENTS.md` 的忽略匹配，移除 `package-lock.json` 跟踪以践行极致零依赖标准。
