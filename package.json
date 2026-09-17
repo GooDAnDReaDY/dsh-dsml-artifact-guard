@@ -9,7 +9,8 @@
     "lib",
     "cordis.patch.yml",
     "README.md",
-    "docs",
+    "README.ru.md",
+    "README.zh.md",
     "LICENSE"
   ],
   "scripts": {
