@@ -1,7 +1,7 @@
 # Design Contract: dsh-dsml-artifact-guard
 
 ## 1. Product Purpose & User Scenarios
-- **Purpose**: Streaming guard for DeepSeek Harness that intercepts assistant stream chunks and strips leaked DSML closing tags (`</｜DSML｜parameter>`, `</｜DSML｜invoke>`, `</｜DSML｜tool_calls>`) emitted by upstream providers before text reaches the user interface.
+- **Purpose**: Streaming guard for DeepSeek Harness that intercepts assistant stream chunks and strips leaked DSML protocol closing tags (`</｜DSML｜parameter>`, `</｜DSML｜invoke>`, `</｜DSML｜tool_calls>`) emitted by upstream providers before text reaches the user interface.
 - **Primary Scenarios**:
   - Assistant responds through an upstream gateway exhibiting DSML leakage (e.g. `opencode-go` + `deepseek-v4-flash`). Leaked protocol closing tags at the end of the response are stripped automatically.
   - User views and configures settings (`mode`, `providerId`, `modelId`) through the native DSH Settings UI card without manual config editing.
@@ -29,10 +29,19 @@
   - Full trilingual documentation: `README.md` (EN), `README.ru.md` (RU), `README.zh.md` (ZH).
 
 ## 3. Visual & Component States
-- **Card Styling**:
+- **Card Styling & Theming**:
   - Border radius: 12px.
-  - Colors: derived strictly from theme variables (`--dsw-alias-border-l2`, `--dsw-alias-bg-card`, `--dsw-alias-label-primary`, `--dsw-alias-label-secondary`, `--dsw-alias-accent-primary`, `--dsw-alias-bg-field`).
+  - Zero hardcoded hex or rgba color literals: `lib/client.js` is strictly governed by CSS custom properties and `color-mix()` functions.
+  - Tokens used:
+    - Backgrounds: `var(--dsw-alias-bg-card, var(--dsw-alias-bg-layer-3))`, `var(--dsw-alias-bg-field, var(--dsw-alias-bg-layer-2))`.
+    - Borders: `var(--dsw-alias-border-l2)`.
+    - Labels: `var(--dsw-alias-label-primary)`, `var(--dsw-alias-label-secondary)`, `var(--dsw-alias-label-tertiary)`.
+    - Brand / Accent: `var(--dsw-alias-brand-primary, var(--dsw-alias-state-brand-primary))`.
+    - Status States: `var(--dsw-alias-state-success-primary)`, `var(--dsw-alias-state-warning-primary)`, `var(--dsw-alias-state-danger-primary, var(--dsw-alias-state-error-primary))`.
+    - Substrates / Tints: `color-mix(in srgb, var(--dsw-alias-...) N%, transparent)` for badges, banners, and updater panels.
+    - Contrast Buttons: `background: var(--dsw-alias-label-primary)`, `color: var(--dsw-alias-bg-layer-3, var(--dsw-alias-bg-card))` ensures perfect legibility across dark and light palettes.
   - Style Marker: `data-dsh-plugin="@goodandready/dsh-dsml-artifact-guard"`.
+  - Automated Guard: `test/theme.test.js` enforces zero hex/rgba regressions on every build.
 - **States**:
   - `loading`: shows loading indicator while reading settings snapshot.
   - `unavailable`: shows error message if settings service is unmounted.
@@ -53,8 +62,9 @@
   - Protect all POST route mutations with loopback & same-origin check (`isTrustedUpdateRequest`).
   - Support English (`en`) as default fallback and Chinese (`zh`) in client bundle.
   - Preserve fail-open guarantees for all user prose.
+  - Use `color-mix()` for transparent backgrounds and canonical CSS variables for all UI elements.
 - **Don't**:
-  - Do not hardcode CSS colors outside theme variables.
+  - Do not hardcode CSS colors or rgba() literals in client code.
   - Do not make the stream hook async.
   - Do not bypass pnpm quarantine with `--config.minimumReleaseAge=0` in updater.
 
@@ -62,3 +72,4 @@
 - **2026-09-06**: Added `ctx.effect` lifecycle wrapper and switched patch to schema-driven defaults (`#8, #9`).
 - **2026-09-12**: Changed schema default mode to `sanitize` for out-of-the-box protection, implemented robust open/close tag balancing across streaming chunks, and tracked `package-lock.json` (`#11`).
 - **2026-09-17**: Added native DSH Settings Card (`settings.plugin.item`), host settings registration, and one-click updater endpoint `/api/dsh-dsml-artifact-guard/update` (`#17, #18`).
+- **2026-09-18**: Fixed theme regression (`#26`): replaced all 42 hardcoded hex/rgba instances in `lib/client.js` with canonical `--dsw-alias-...` CSS tokens and `color-mix()`. Added automated test guard `test/theme.test.js`. Fixed `.gitignore` whitespace bug for `AGENTS.md`. Untracked `package-lock.json` and added it to `.gitignore` since the package has 0 runtime and 0 dev dependencies, relying entirely on native Node.js built-ins.
