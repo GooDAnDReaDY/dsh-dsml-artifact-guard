@@ -183,3 +183,9 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 - #19: Sanitized repository from internal AGENTS.md and updated .gitignore.
 - #20: Optimized npm package allowlist, eliminating duplicate READMEs and reducing package size by ~40%.
 - #21: Removed legacy build archives from source tree.
+
+## Changed in v0.2.1
+
+- #26: Theme tokenization for settings card in `lib/client.js`: eliminated all 42 hardcoded hex/rgba color literals, migrating to canonical `--dsw-alias-...` CSS custom properties and `color-mix()` for flawless Dark and Light mode rendering.
+- #26: Added automated theme regression test guard (`test/theme.test.js`).
+- #26: Fixed `.gitignore` rule for `AGENTS.md` and untracked `package-lock.json` for pure zero-dependency repository hygiene.
