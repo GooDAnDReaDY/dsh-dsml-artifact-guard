@@ -175,3 +175,11 @@ MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 ## Changed in v0.1.5
 
 #15: fix Mermaid diagram edge label syntax on GitHub and add mandatory repository support block.
+
+## Changed in v0.2.0
+
+- #17: Native DSH Settings Card in slot settings.plugin.item with snapshot status checking, form inputs, and disabled warning indicator.
+- #18: One-click plugin updater with endpoint /api/dsh-dsml-artifact-guard/update, semver comparison, and loopback/same-origin protection.
+- #19: Sanitized repository from internal AGENTS.md and updated .gitignore.
+- #20: Optimized npm package allowlist, eliminating duplicate READMEs and reducing package size by ~40%.
+- #21: Removed legacy build archives from source tree.
