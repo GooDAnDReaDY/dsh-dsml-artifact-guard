@@ -161,31 +161,6 @@ npm run check
 
 MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 
-## Changed in v0.1.3
+---
 
-#8: wrap `llm/stream` in `ctx.effect` so unload unsubscribes.
-#9: `cordis.patch.yml` uses `config: {}` — schema defaults (`mode: audit`, provider/model ids) apply unless overridden in host config.
-
-## v0.1.4 变更说明
-
-#11: 将 schema 中 `mode` 默认值设置为 `sanitize`，实现开箱即用的清理保护。
-#11: 在 `sanitizeDsmlArtifacts` 中实现严格的开闭标签深度平衡，精准处理正文中已闭合标签与末尾泄漏标签。
-#11: 纳入 `package-lock.json` 跟踪并完善设计契约。
-
-## v0.1.5 变更说明
-
-#15: 修复 GitHub 上 Mermaid 流程图边标签语法解析错误，并补全标准项目支持引导区。
-
-## v0.2.0 更新日志
-
-- #17: 在 settings.plugin.item 插槽中注册原生设置卡片，支持快照状态检查与禁用警示横幅。
-- #18: 一键在线更新模块，提供 /api/dsh-dsml-artifact-guard/update 端点与同源/回环安全校验。
-- #19: 清理公开代码仓库中的内部 AGENTS.md 规则文件并更新 .gitignore。
-- #20: 优化 npm 发布包白名单，移除冗余 README 副本，安装包体积缩减约 40%FD。
-- #21: 清理源代码目录中的旧版本 .tgz 打包归档。
-
-## v0.2.1 更新日志
-
-- #26：配置面板全量主题语义化规范（`lib/client.js`）：彻底清除全部 42 处硬编码 hex/rgba 颜色，全面接入 `--dsw-alias-...` 核心变量与 `color-mix()`，保障深色与浅色主题下的极致对比度与可读性。
-- #26：新增前端主题规范自动化回归防护测试（`test/theme.test.js`）。
-- #26：修复 `.gitignore` 对 `AGENTS.md` 的忽略匹配，移除 `package-lock.json` 跟踪以践行极致零依赖标准。
+完整版本演进与更新记录详见 [CHANGELOG.md](CHANGELOG.md)。

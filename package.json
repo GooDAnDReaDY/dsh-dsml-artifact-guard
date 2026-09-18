@@ -11,7 +11,8 @@
     "README.md",
     "README.ru.md",
     "README.zh.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "check": "node --check lib/index.js",

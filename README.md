@@ -110,6 +110,21 @@ The guard retains a minimal 96-byte window until the next chunk or `finish` even
 * **`audit`**: Emits diagnostic logs with `ctx.logger.info(...)` without modifying the user-visible stream.
 * **`disabled`**: Bypasses processing entirely.
 
+### 5. Native Web UI Settings Card
+Registered directly in the DeepSeek Harness `settings.plugin.item` slot (`lib/client.js`):
+* **Reactive Configuration**: Adjust `mode`, `providerId`, and `modelId` on the fly without restarting the harness, powered by reactive `scope.watch`.
+* **Snapshot State Awareness**: Gracefully handles snapshot loading, ready, and unavailable states.
+* **Protection Bypass Warning**: Displays a prominent `OFF` badge and warning banner when the guard is set to `disabled`.
+
+### 6. One-Click In-Place Auto-Updater
+A canonical HTTP management route (`/api/dsh-dsml-artifact-guard/update`) mounted via `lib/updater.js`:
+* **SemVer Inspection**: Queries the registry and compares versions with full pre-release support.
+* **Loopback & Same-Origin Protection**: Write mutations (`POST`) are strictly restricted to local loopback connections with valid origin headers.
+* **Clean Invocation**: Executes package updates safely without risky CLI bypass flags.
+
+### 7. Full Dark & Light Theme Compliance
+All client UI styles are strictly tokenized via DeepSeek Harness `--dsw-alias-...` CSS custom properties and `color-mix()` functions with zero hardcoded hex or rgba color literals. High contrast and accessibility are guaranteed in both Dark and Light themes, guarded by automated regression tests (`test/theme.test.js`).
+
 ---
 
 ## 📦 Installation
@@ -144,6 +159,13 @@ dsh-dsml-artifact-guard:
 | `providerId` | `string` | `"opencode-go"` | Target provider identifier exhibiting leaked tags |
 | `modelId` | `string` | `"deepseek-v4-flash"` | Target model identifier exhibiting leaked tags |
 
+### HTTP Management Endpoints
+
+| Method | Endpoint | Access | Description |
+|:---|:---|:---|:---|
+| `GET` | `/api/dsh-dsml-artifact-guard/update` | Web UI / Localhost | Retrieves current version, latest registry version, and update status |
+| `POST` | `/api/dsh-dsml-artifact-guard/update` | Loopback & Same-Origin | Triggers in-place package update via DSH CLI |
+
 ---
 
 ## 🧪 Testing
@@ -161,31 +183,6 @@ npm run check
 
 MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
 
-## Changed in v0.1.3
+---
 
-#8: wrap `llm/stream` in `ctx.effect` so unload unsubscribes.
-#9: `cordis.patch.yml` uses `config: {}` — schema defaults (`mode: audit`, provider/model ids) apply unless overridden in host config.
-
-## Changed in v0.1.4
-
-#11: schema `mode` default set to `sanitize` for out-of-the-box protection.
-#11: robust open/close tag balancing in `sanitizeDsmlArtifacts` to handle prior closed blocks in prose.
-#11: repo hygiene with tracked `package-lock.json` and design contract.
-
-## Changed in v0.1.5
-
-#15: fix Mermaid diagram edge label syntax on GitHub and add mandatory repository support block.
-
-## Changed in v0.2.0
-
-- #17: Native DSH Settings Card in slot settings.plugin.item with snapshot status checking, form inputs, and disabled warning indicator.
-- #18: One-click plugin updater with endpoint /api/dsh-dsml-artifact-guard/update, semver comparison, and loopback/same-origin protection.
-- #19: Sanitized repository from internal AGENTS.md and updated .gitignore.
-- #20: Optimized npm package allowlist, eliminating duplicate READMEs and reducing package size by ~40%.
-- #21: Removed legacy build archives from source tree.
-
-## Changed in v0.2.1
-
-- #26: Theme tokenization for settings card in `lib/client.js`: eliminated all 42 hardcoded hex/rgba color literals, migrating to canonical `--dsw-alias-...` CSS custom properties and `color-mix()` for flawless Dark and Light mode rendering.
-- #26: Added automated theme regression test guard (`test/theme.test.js`).
-- #26: Fixed `.gitignore` rule for `AGENTS.md` and untracked `package-lock.json` for pure zero-dependency repository hygiene.
+For a complete release history and version migration notes, see [CHANGELOG.md](CHANGELOG.md).
