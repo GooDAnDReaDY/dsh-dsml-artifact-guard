@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.2] - 2026-09-18
+
+### Fixed
+- **Settings reachable again (`lib/client.js`)**: the settings card registered into `settings.plugin.item`, a slot the current DSH core no longer renders, so the plugin's settings were unreachable. The surface now registers into the Plugins page row seat `plugins.row.config`, keyed `@goodandready/dsh-dsml-artifact-guard#dsh-dsml-artifact-guard`: the plugin's row gains a configure control whose page is the settings form (`view: 'page'`, rendered bare — `PluginCard` accepts `bare` and drops the card wrapper because the host page draws the title, icon, crumb and padding) plus a one-line state under the title (`view: 'summary'`). The legacy seat stays registered as a fallback for older cores ([#31](http://192.168.1.111:3005/goodandready/dsh-dsml-artifact-guard/issues/31)).
+- **Row-seat guard (`test/row-config-seat.test.js`)**: asserts the row key, the seat order (row seat first, legacy seat kept) and the bare page render.
+
+---
+
 ## [0.2.1] - 2026-09-18
 
 ### Fixed
