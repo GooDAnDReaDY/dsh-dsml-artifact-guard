@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.3] - 2026-09-19
+
+### Fixed
+- **Settings reachable again on the plugin's own page**: the card registered into
+  `settings.plugin.item` / `plugins.row.config`, and the current DSH core
+  (0.1.6-alpha.2) only renders a plugin's configuration page for entries registered
+  in the plugin list seat `plugins.item` — that is how `dsh-agentrouter` and
+  `dsh-agent-orchestrator` show their settings. The view-aware `PluginItem` is now
+  registered there as well (`id: 'dsh-dsml-artifact-guard'`, order 95, static label),
+  with the row seat and the legacy card kept as fallbacks.
+- The render path was hardened on the way: `PluginCard` is wrapped in its own error
+  boundary so a throw inside this card cannot take the whole client batch down.
+
 ## [0.2.2] - 2026-09-18
 
 ### Fixed
