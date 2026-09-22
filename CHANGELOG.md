@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## 0.2.4
+
+### Fixed
+- The settings card no longer waits for the removed `settingsScope` service. It uses `configForms` on current DeepSeek Harness (#41).
+
 ## [0.2.3] - 2026-09-19
 
 ### Fixed
