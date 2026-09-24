@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## 0.2.4
+## [0.2.5] - 2026-09-24
+
+### Fixed
+- **Preflight & Locale Contract**: eliminated nonexistent `locale.get()` call in `lib/client.js`, using injected `props.t` with canonical `ctx.locale.bind(NS)` fallback (#36).
+- **Streaming Buffer & Tag Balancing**: replaced fixed 64-character buffer slicing with delimiter-based tag boundary scanning (`<` and `>`), ensuring DSML parameter tags of arbitrary length preserve open/close tag balance without premature truncation (#37).
+- **One-Click Updater LAN Support**: updated `isTrustedUpdateRequest` to allow same-origin requests matching Host/Origin, enabling one-click updates from LAN and reverse-proxy Web UIs while retaining strict loopback verification for local endpoints (#38).
+- **Dead Code Elimination**: connected `checkRequestMethod` helper to updater POST handler (#39).
+
+## [0.2.4] - 2026-09-22
 
 ### Fixed
 - The settings card no longer waits for the removed `settingsScope` service. It uses `configForms` on current DeepSeek Harness (#41).

@@ -1,6 +1,6 @@
 {
   "name": "@goodandready/dsh-dsml-artifact-guard",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Sanitizes leaked DeepSeek DSML closing tags from model text streams",
   "type": "module",
   "main": "lib/index.js",
