@@ -134,3 +134,31 @@ test('out of scope stream passes through unchanged', () => {
   const source = stream();
   assert.equal(hook({ providerId: 'other', modelId: 'model' }, () => source), source);
 });
+
+test('tags longer than 64 characters preserve tag balance and fail-open guarantees', async () => {
+  const longTag = '<｜DSML｜parameter name="' + 'a'.repeat(70) + '">';
+  let stripped = false;
+  const chunks = [
+    { type: 'text-delta', index: 0, text: 'Unclosed long tag: ' + longTag + ' inside text. ' },
+    { type: 'text-delta', index: 0, text: 'Tail: ' + tail },
+    { type: 'finish' }
+  ];
+  await collect(chunks, {
+    mode: 'sanitize',
+    onArtifact: () => { stripped = true; }
+  });
+  assert.equal(stripped, false, 'Unclosed long tag must NOT trigger artifact stripping');
+
+  const closedChunks = [
+    { type: 'text-delta', index: 0, text: 'Closed long tag: ' + longTag + 'val</｜DSML｜parameter>. Leaked: ' + tail },
+    { type: 'finish' }
+  ];
+  let closedStripped = false;
+  const res = await collect(closedChunks, {
+    mode: 'sanitize',
+    onArtifact: () => { closedStripped = true; }
+  });
+  assert.equal(closedStripped, true);
+  const text = res.filter(x => x.type === 'text-delta').map(x => x.text).join('');
+  assert.equal(text, 'Closed long tag: ' + longTag + 'val</｜DSML｜parameter>. Leaked: ');
+});
