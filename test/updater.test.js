@@ -41,6 +41,17 @@ test('isTrustedUpdateRequest validates headers, loopback and origin', () => {
 
   const crossOrigin = { ...validReq, headers: { ...validReq.headers, 'sec-fetch-site': 'cross-site' } };
   assert.equal(isTrustedUpdateRequest(crossOrigin), false);
+
+  const lanReq = {
+    headers: {
+      'x-dsh-plugin-update': '1',
+      'sec-fetch-site': 'same-origin',
+      origin: 'http://192.168.1.111:3080',
+      host: '192.168.1.111:3080',
+    },
+    socket: { remoteAddress: '192.168.1.50' },
+  };
+  assert.equal(isTrustedUpdateRequest(lanReq), true);
 });
 
 import { checkRequestMethod } from "../lib/index.js";

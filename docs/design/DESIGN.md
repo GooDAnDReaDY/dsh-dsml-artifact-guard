@@ -24,7 +24,7 @@
   - `providerId`: target provider (default `"opencode-go"`).
   - `modelId`: target model (default `"deepseek-v4-flash"`).
 - **HTTP Routes**:
-  - `/api/dsh-dsml-artifact-guard/update` (GET for version status, POST for executing update; protected by loopback and same-origin validation).
+  - `/api/dsh-dsml-artifact-guard/update` (GET for version status, POST for executing update; protected by loopback and strict same-origin validation for localhost and LAN/reverse-proxy UIs).
 - **Documentation**:
   - Full trilingual documentation: `README.md` (EN), `README.ru.md` (RU), `README.zh.md` (ZH).
 
@@ -53,7 +53,7 @@
 ## 4. Streaming & Buffering Contract
 - **Synchronous Hook Contract**: The `llm/stream` listener returns an `AsyncIterable` synchronously. Returning a `Promise` breaks the Cordis event dispatcher.
 - **Sliding Buffer (KEEP = 96)**: Preserves the terminal window across chunk splits.
-- **Tag Balancing**: Tracks opening and closing DSML tags across the stream so that only orphaned closing tags at the terminal tail are sanitized, leaving balanced code blocks untouched.
+- **Tag Balancing**: Delimiter-based boundary scanning (`<` and `>`) that accurately tracks opening and closing DSML tags across arbitrary chunk boundaries and tag lengths without fixed-buffer truncation, ensuring fail-open guarantees for legitimate user prose.
 - **Lifecycle Cleanup**: Registered with `ctx.effect` for clean unmount.
 
 ## 5. Do / Don't
@@ -73,3 +73,9 @@
 - **2026-09-12**: Changed schema default mode to `sanitize` for out-of-the-box protection, implemented robust open/close tag balancing across streaming chunks, and tracked `package-lock.json` (`#11`).
 - **2026-09-17**: Added native DSH Settings Card (`settings.plugin.item`), host settings registration, and one-click updater endpoint `/api/dsh-dsml-artifact-guard/update` (`#17, #18`).
 - **2026-09-18**: Fixed theme regression (`#26`): replaced all 42 hardcoded hex/rgba instances in `lib/client.js` with canonical `--dsw-alias-...` CSS tokens and `color-mix()`. Added automated test guard `test/theme.test.js`. Fixed `.gitignore` whitespace bug for `AGENTS.md`. Untracked `package-lock.json` and added it to `.gitignore` since the package has 0 runtime and 0 dev dependencies, relying entirely on native Node.js built-ins.
+
+- **2026-09-24**: Deep audit resolution:
+  - Eliminated nonexistent `ctx.locale.get()` in `lib/client.js` in favor of injected `props.t` with `ctx.locale.bind(NS)` fallback (#36).
+  - Upgraded stream buffer scanning to delimiter-based boundary tracking supporting DSML tags of arbitrary length without buffer truncation (#37).
+  - Allowed same-origin update requests from LAN/reverse-proxy UIs while enforcing strict Host/Origin match and loopback origin security (#38).
+  - Integrated `checkRequestMethod` helper into updater POST handler, eliminating dead export (#39).
