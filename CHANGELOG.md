@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.7] - 2026-09-25
+
+### Fixed
+- **Volatile Config Unwrapping**: introduced `unwrapConfig` helper to gracefully handle pre-resolved volatile schema references passed by Cordis to `apply` and `ctx.on('config')`, avoiding TypeError on functions inside volatile schemas (#47).
+
 ## [0.2.6] - 2026-09-25
 
 ### Fixed
