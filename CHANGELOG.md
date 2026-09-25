@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.6] - 2026-09-25
+
+### Fixed
+- **SettingsForms Migration (DSH 0.1.7)**: marked Config schema as volatile and configured settings policy (`auto: false`) to suppress generic auto-generated form duplicates, while resolving row ID `dsh-dsml-artifact-guard` via client `configForms` with live subscription support (#17).
+- **Client Locale Lifecycle**: wrapped client locale registration in `ctx.effect` to ensure clean namespace disposal on HMR and avoid collision on module reload (#44).
+
 ## [0.2.5] - 2026-09-24
 
 ### Fixed
