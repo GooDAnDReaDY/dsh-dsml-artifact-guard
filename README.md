@@ -55,6 +55,14 @@ These leaked closing tags visually pollute the chat bubble, cause Markdown rende
 
 ---
 
+## 💡 Why Not in DSH Core?
+
+As of DeepSeek Harness **0.1.7-rc.2**, the core upstream stream pipeline (`dsh-llm-pi-ai`, `dsh-llm-deepseek*`, etc.) does not perform terminal DSML protocol cleanup — there is zero mention or handling of `｜DSML｜` anywhere in the core engine. When upstream gateways (e.g. `commandcode`, `deepseek-official`, or custom proxies) leak protocol closing tags at the conclusion of an assistant turn, DSH forwards them directly to the frontend.
+
+`dsh-dsml-artifact-guard` serves as the universal runtime guard across all DeepSeek models regardless of provider gateway or routing configuration.
+
+---
+
 ## 🏗️ Architecture
 
 ```mermaid
@@ -141,14 +149,14 @@ Restart your DeepSeek Harness instance.
 
 ## ⚙️ Configuration (`settings.yaml`)
 
-Configure provider and model targets in `settings.yaml` or through the Web UI:
+Configure model matching and provider targets in `settings.yaml` or through the Web UI:
 
 ```yaml
 # settings.yaml
 dsh-dsml-artifact-guard:
   mode: sanitize
-  providerId: "your-provider-id"
-  modelId: "your-model-id"
+  modelPattern: "deepseek"   # Case-insensitive RegExp matching all DeepSeek models
+  providers: []             # Empty = guard all providers; or e.g. ["commandcode", "deepseek-official"]
 ```
 
 ### Configuration Parameters
@@ -156,8 +164,10 @@ dsh-dsml-artifact-guard:
 | Parameter | Type | Default | Description |
 |:---|:---|:---|:---|
 | `mode` | `string` | `"sanitize"` | Operation mode: `"sanitize"` (strip tags), `"audit"` (log only), or `"disabled"` |
-| `providerId` | `string` | `"opencode-go"` | Target provider identifier exhibiting leaked tags |
-| `modelId` | `string` | `"deepseek-v4-flash"` | Target model identifier exhibiting leaked tags |
+| `modelPattern` | `string` | `"deepseek"` | Case-insensitive RegExp matched against model IDs (e.g. `deepseek`, `deepseek-v4.*`, `deepseek/.*`) |
+| `providers` | `string[]` | `[]` | Optional list of provider IDs. When empty, guards all providers |
+| `providerId` | `string` | `undefined` | *(Deprecated)* Legacy exact provider identifier; maintained for backward compatibility |
+| `modelId` | `string` | `undefined` | *(Deprecated)* Legacy exact model identifier; maintained for backward compatibility |
 
 ### HTTP Management Endpoints
 

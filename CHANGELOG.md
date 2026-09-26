@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.8] - 2026-09-26
+
+### Added
+- **Universal DeepSeek Model Matching**: replaced strict single `providerId`/`modelId` pair with case-insensitive `modelPattern` RegExp (default: `deepseek`), automatically protecting all DeepSeek models regardless of provider gateway or vendor prefix (#48).
+- **Target Providers Filter**: added optional `providers` array filter (empty = all providers) (#48).
+- **Russian Localization**: added native `ru` translations in the Web UI settings card alongside English and Chinese (#48).
+
+### Changed
+- **De-identification**: removed proprietary `opencode-go` default in public package configuration.
+- **Backward Compatibility**: user configs with legacy `providerId` and `modelId` continue to work as an additional exact rule, with a deprecation notice and one-click clear button in the Web UI settings card.
+- **Documentation**: added dedicated section explaining lack of DSML processing in core DSH 0.1.7-rc.2.
+
 ## [0.2.7] - 2026-09-25
 
 ### Fixed

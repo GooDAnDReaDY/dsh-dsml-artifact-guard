@@ -55,6 +55,14 @@
 
 ---
 
+## 💡 为什么核心层未包含此功能？
+
+截至 DeepSeek Harness **0.1.7-rc.2**，核心上游流管道（`dsh-llm-pi-ai`、`dsh-llm-deepseek*` 等）均未对末端 DSML 协议标签进行任何清洗——核心引擎中完全不存在对 `｜DSML｜` 的处理。当上游网关（例如 `commandcode`、`deepseek-official` 或其他代理）在回复结尾泄漏协议闭合标签时，DSH 会将其直接传输到聊天前端。
+
+`dsh-dsml-artifact-guard` 为所有 DeepSeek 模型提供通用的运行时防护，不受特定服务商网关或路由配置的限制。
+
+---
+
 ## 🏗️ 架构设计
 
 ```mermaid
