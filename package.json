@@ -1,6 +1,6 @@
 {
   "name": "@goodandready/dsh-dsml-artifact-guard",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Sanitizes leaked DeepSeek DSML closing tags from model text streams",
   "type": "module",
   "main": "lib/index.js",
@@ -33,12 +33,15 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/schemastery": "^3.18.1"
+    "@deepseek-ai/schemastery": "^3.18.4"
   },
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.4"
   }
 }

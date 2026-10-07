@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.9] - 2026-10-07
+
+### Fixed
+- **Settings Card Locale Snapshot Extraction**: safely extract active locale string from `LocaleSnapshot` object (`snap?.active`) returned by `ctx.locale.getLocale()` / `getSnapshot()`, eliminating fatal `TypeError: rawLang.startsWith is not a function` during settings card mount (#50, #57).
+- **Russian Language Registration & Ownership**: removed embedded `ru` dictionary from the plugin bundle to prevent `(namespace, 'ru')` duplicate registration collisions in core; delegate Russian translations to `dsh-russian-lang` via `props.t` and `ctx.locale.bind(NS)` (#58).
+- **Volatile Per-Field Settings Schema**: marked configuration fields volatile individually, enabling DSH to discover and generate settings form controls (#52).
+
 ## [0.2.8] - 2026-09-26
 
 ### Added
