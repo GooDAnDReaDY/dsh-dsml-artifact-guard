@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.10] - 2026-10-07
+
+### Removed
+- **Dead `settings.register` Fallback**: removed dead legacy registration path in `apply()` and eliminated potential un-unwrapped volatile box leak on host settings delivery (#54, #55, #59).
+- **Dead `settings.plugin.item` Slot**: removed dead slot registration in client bundle, routing exclusively through active `plugins.row.config` and `plugins.item` seats (#59).
+
+### Optimized
+- **Single-Pass Config Unwrapping**: optimized `unwrapConfig` error fallback to evaluate raw plain config in a single pass instead of three recursive walks (#56).
+
 ## [0.2.9] - 2026-10-07
 
 ### Fixed

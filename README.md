@@ -119,8 +119,8 @@ The guard retains a minimal 96-byte window until the next chunk or `finish` even
 * **`disabled`**: Bypasses processing entirely.
 
 ### 5. Native Web UI Settings Card
-Registered directly in the DeepSeek Harness `settings.plugin.item` slot (`lib/client.js`):
-* **Reactive Configuration**: Adjust `mode`, `providerId`, and `modelId` on the fly without restarting the harness, powered by reactive `scope.watch`.
+Registered directly in DeepSeek Harness `plugins.row.config` and `plugins.item` slots (`lib/client.js`):
+* **Reactive Configuration**: Adjust `mode`, `providers`, and `modelPattern` on the fly without restarting the harness.
 * **Snapshot State Awareness**: Gracefully handles snapshot loading, ready, and unavailable states.
 * **Protection Bypass Warning**: Displays a prominent `OFF` badge and warning banner when the guard is set to `disabled`.
 
