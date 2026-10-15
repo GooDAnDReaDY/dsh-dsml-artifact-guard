@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.11] - 2026-10-15
+
+### Fixed
+- **Settings Policy Owner Attribution**: passed `ctx.fiber` as the owner argument to `ctx.settings.configure({ auto: false }, ctx.fiber)`, ensuring settings policy correctly attributes to the plugin fiber and suppresses generic duplicate form generation (#62).
+- **Live Configuration Updates via Volatile Event**: subscribed to `loader/volatile-update` in `apply()`, allowing live settings mutations saved in the Web UI card to take effect in place without requiring a server restart (#62).
+
 ## [0.2.10] - 2026-10-07
 
 ### Removed
