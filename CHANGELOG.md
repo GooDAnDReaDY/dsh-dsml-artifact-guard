@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.12] - 2026-10-15
+
+### Fixed
+- **Settings Form Entry ID Query**: in `lib/client.js` `PluginCard`, changed `_ctx.configForms.get(...)` to query strictly `ROW_ID` (`'dsh-dsml-artifact-guard'`), removing fallback to package name `NS` (`'@goodandready/dsh-dsml-artifact-guard'`) (#64).
+- **Settings Scope Binding**: bound `_ctx.settingsScope` using `namespace: ROW_ID`, fixing settings form read failure and resolving `dshmarket` verifier warning for unserved config namespaces (#64).
+
 ## [0.2.11] - 2026-10-15
 
 ### Fixed
