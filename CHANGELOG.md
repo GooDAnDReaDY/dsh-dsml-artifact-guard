@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.13] - 2026-10-21
+
+### Fixed
+- **Desktop Profile Auto-Detection**: in `lib/updater.js`, updated `runtime()` to detect profile from `process.cwd()` when `cordis.yml` or `cordis.patch.yml` exists, properly resolving the `desktop` profile in DSH Desktop without requiring `DSH_PROFILE_DIR` (#66).
+- **DSH Desktop Origin Trust**: in `lib/updater.js`, updated `isTrustedUpdateRequest()` to accept loopback requests from Electron UI origin `dsh-app://app` (#66).
+
 ## [0.2.12] - 2026-10-15
 
 ### Fixed
