@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<h3>Fail-Open Stream Sanitizer for Leaked Protocol DSML Closing Tags in DeepSeek Harness</h3>
+<h3>Zero-dependency streaming guard and sanitizer for leaked DeepSeek DSML protocol tags and reasoning artifacts</h3>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@goodandready/dsh-dsml-artifact-guard"><img src="https://img.shields.io/npm/v/@goodandready/dsh-dsml-artifact-guard.svg?style=for-the-badge&color=6366f1&labelColor=1e1b4b" alt="npm version"></a>
@@ -24,9 +24,9 @@
 <table align="center">
   <tr>
     <td align="center">
-      ⭐ <strong>If you like this plugin, please star it on GitHub</strong> — it shows me that the plugin is useful to you and motivates me to keep developing it.
+      ⭐ <strong>If you find this plugin helpful, please star it on GitHub</strong> — your support helps maintain and develop the project.
       <br><br>
-      🐛 <strong>If you find a bug or would like to request a feature</strong>, open a GitHub issue in any language — I will review your proposal and implement useful suggestions in a future plugin version.
+      🐛 <strong>Found a bug or have a feature idea?</strong> Feel free to open an issue on GitHub in any language.
     </td>
   </tr>
 </table>
@@ -35,103 +35,25 @@
 
 ---
 
-## ⚡ Overview & The Problem
+## ⚡ Problem & Purpose
 
-When interacting with certain upstream model providers or API gateways, raw DSML (DeepSeek Markup Language) tool-invocation protocol tags can leak into the assistant's visible text stream. Users frequently see trailing protocol clutter like:
+When streaming responses from DeepSeek models via third-party proxies, gateways, or incompatible providers, protocol closing tags for tool invocations (DSML — DeepSeek Markup Language) occasionally leak into the visible text channel. Users observe raw markup at the end of their conversation:
 
 ```text
-Done. All tests have passed.
+Response completed successfully.
 </｜DSML｜parameter> </｜DSML｜invoke> </｜DSML｜tool_calls>
 ```
 
-These leaked closing tags visually pollute the chat bubble, cause Markdown rendering glitches, and can confuse downstream agents or clipboard exports.
+Additionally, reasoning models (such as DeepSeek-R1 / V3) or interrupted network streams can leave orphan `</think>` tags, dangling tokens (`<｜end of sentence｜>`), or unclosed thinking blocks that corrupt markdown rendering.
 
-**`@goodandready/dsh-dsml-artifact-guard`** is a lightweight, host-only runtime stream interceptor for DeepSeek Harness that cleans up these terminal artifacts in real time before they reach the user interface:
+**`@goodandready/dsh-dsml-artifact-guard`** is a high-performance runtime guard for DeepSeek Harness that cleans these protocol artifacts in real time before they reach the user interface:
 
-1. **Synchronous Stream Contract Preservation**: Cordis requires stream interceptors to return an `AsyncIterable` synchronously. Making interceptors `async` returns a `Promise` that crashes the harness turn with `stream is not async iterable`. This guard adheres strictly to the synchronous hook contract.
-2. **Split Chunk Buffer Pipeline**: Protocol tags often arrive split across multiple TCP or WebSocket text deltas. The guard maintains a small sliding buffer (`KEEP = 96` bytes) to reliably match and strip multi-chunk tails.
-3. **100% Fail-Open Safety**: Never drops legitimate user or assistant text. Legitimate discussions about DSML syntax or internal tool calls are preserved intact.
-4. **Targeted Provider & Model Scoping**: Restricts processing specifically to the provider and model configurations that exhibit tag leakage, passing other model traffic through with zero overhead.
-
----
-
-## 💡 Why Not in DSH Core?
-
-As of DeepSeek Harness **0.1.7-rc.2**, the core upstream stream pipeline (`dsh-llm-pi-ai`, `dsh-llm-deepseek*`, etc.) does not perform terminal DSML protocol cleanup — there is zero mention or handling of `｜DSML｜` anywhere in the core engine. When upstream gateways (e.g. `commandcode`, `deepseek-official`, or custom proxies) leak protocol closing tags at the conclusion of an assistant turn, DSH forwards them directly to the frontend.
-
-`dsh-dsml-artifact-guard` serves as the universal runtime guard across all DeepSeek models regardless of provider gateway or routing configuration.
-
----
-
-## 🏗️ Architecture
-
-```mermaid
-graph TD
-    subgraph DSH ["DeepSeek Harness Runtime"]
-        Turn["Agent Turn Execution<br/>(LLM Stream Request)"]
-        ChatUI["Chat UI Stream Consumer<br/>(Renders clean markdown text)"]
-    end
-
-    subgraph Guard ["@goodandready/dsh-dsml-artifact-guard"]
-        Hook["Synchronous llm/stream Hook<br/>(Returns AsyncIterable synchronously)"]
-        ScopeCheck{"Scope Match?<br/>(providerId & modelId)"}
-        PassThrough["Raw Stream Pass-Through<br/>(Zero overhead for other models)"]
-        Buffer["Sliding Tail Buffer<br/>(Preserves trailing 96 bytes across deltas)"]
-        Detector{"Terminal Artifact?<br/>(Matches leaked DSML tail at finish)"}
-        Sanitize["Sanitize Mode<br/>(Strips leaked closing tags)"]
-        Audit["Audit Mode<br/>(Emits ctx.logger warning only)"]
-    end
-
-    Turn -->|llm/stream hook| Hook
-    Hook --> ScopeCheck
-    ScopeCheck -->|No| PassThrough
-    ScopeCheck -->|Yes| Buffer
-    PassThrough --> ChatUI
-    Buffer --> Detector
-    Detector -->|No Artifact| ChatUI
-    Detector -->|Artifact detected: sanitize| Sanitize --> ChatUI
-    Detector -->|Artifact detected: audit| Audit --> ChatUI
-```
-
----
-
-## ✨ Features & Capabilities
-
-### 1. Synchronous Hook Guarantee
-Under Cordis and DSH service lifecycles, event listeners on `llm/stream` must return the transformed stream synchronously. An asynchronous hook wrapper will return a `Promise<AsyncIterable>`, causing the runtime dispatcher to immediately throw `TypeError: stream is not async iterable`. `dsh-dsml-artifact-guard` wraps the stream generator in a pure synchronous registration.
-
-### 2. Multi-Chunk Tail Buffering
-In real-world streaming, the artifact `</｜DSML｜parameter> </｜DSML｜invoke> </｜DSML｜tool_calls>` is frequently fractured into fragments:
-* Chunk 1: `All tasks complete. </｜DSML｜pa`
-* Chunk 2: `rameter> </｜DSML｜invoke> `
-* Chunk 3: `</｜DSML｜tool_calls>`
-
-The guard retains a minimal 96-byte window until the next chunk or `finish` event arrives, ensuring fractured tags are seamlessly detected and sanitized as a single terminal artifact.
-
-### 3. Fail-Open Architecture
-* If the text contains genuine prose about DSML (e.g. `<｜DSML｜tool_calls>example</｜DSML｜tool_calls>`), it is **never** removed.
-* Non-text chunks (`tool-call-delta`, `usage`, `finish`) are forwarded immediately without delay.
-* Any malformed chunk structure passes through transparently to preserve session stability.
-
-### 4. Flexible Operating Modes
-* **`sanitize`** *(default)*: Strips terminal DSML closing tags and logs a warning with the count of removed artifacts.
-* **`audit`**: Emits diagnostic logs with `ctx.logger.info(...)` without modifying the user-visible stream.
-* **`disabled`**: Bypasses processing entirely.
-
-### 5. Native Web UI Settings Card
-Registered directly in DeepSeek Harness `plugins.row.config` and `plugins.item` slots (`lib/client.js`):
-* **Reactive Configuration**: Adjust `mode`, `providers`, and `modelPattern` on the fly without restarting the harness.
-* **Snapshot State Awareness**: Gracefully handles snapshot loading, ready, and unavailable states.
-* **Protection Bypass Warning**: Displays a prominent `OFF` badge and warning banner when the guard is set to `disabled`.
-
-### 6. One-Click In-Place Auto-Updater
-A canonical HTTP management route (`/api/dsh-dsml-artifact-guard/update`) mounted via `lib/updater.js`:
-* **SemVer Inspection**: Queries the registry and compares versions with full pre-release support.
-* **Loopback & Same-Origin Protection**: Write mutations (`POST`) are strictly restricted to local loopback connections with valid origin headers.
-* **Clean Invocation**: Executes package updates safely without risky CLI bypass flags.
-
-### 7. Full Dark & Light Theme Compliance
-All client UI styles are strictly tokenized via DeepSeek Harness `--dsw-alias-...` CSS custom properties and `color-mix()` functions with zero hardcoded hex or rgba color literals. High contrast and accessibility are guaranteed in both Dark and Light themes, guarded by automated regression tests (`test/theme.test.js`).
+1. **Strict Synchronous Hook Contract**: Implements the Cordis `llm/stream` hook synchronously, returning an `AsyncIterable` directly to preserve runtime integrity and avoid fatal `TypeError: stream is not async iterable` errors.
+2. **Chunk Boundary Buffer**: Uses a 96-byte sliding window to reliably intercept closing tags fragmented across network packet boundaries.
+3. **Incomplete Token Recovery at Finish**: Detects and strips truncated protocol closing prefixes (`</｜DSML｜...`) when connections terminate abruptly.
+4. **Reasoning Artifact Protection (`cleanThinkArtifacts`)**: Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed `<think>` blocks at stream finish.
+5. **Fail-Open Tag Balancing**: Tracks open and closed tags to guarantee that legitimate technical discussions containing DSML or think examples are never altered.
+6. **Live Telemetry & Metrics Dashboard**: Real-time in-memory counters (guarded sessions, stripped tags, last incident time, and recent events log) available directly in the native Web UI card.
 
 ---
 
@@ -149,14 +71,15 @@ Restart your DeepSeek Harness instance.
 
 ## ⚙️ Configuration (`settings.yaml`)
 
-Configure model matching and provider targets in `settings.yaml` or through the Web UI:
+Configure matching rules in `settings.yaml` or through the Web UI Settings Card:
 
 ```yaml
 # settings.yaml
 dsh-dsml-artifact-guard:
   mode: sanitize
-  modelPattern: "deepseek"   # Case-insensitive RegExp matching all DeepSeek models
-  providers: []             # Empty = guard all providers; or e.g. ["commandcode", "deepseek-official"]
+  modelPattern: "deepseek"
+  providers: []
+  cleanThinkArtifacts: false
 ```
 
 ### Configuration Parameters
@@ -166,6 +89,7 @@ dsh-dsml-artifact-guard:
 | `mode` | `string` | `"sanitize"` | Operation mode: `"sanitize"` (strip tags), `"audit"` (log only), or `"disabled"` |
 | `modelPattern` | `string` | `"deepseek"` | Case-insensitive RegExp matched against model IDs (e.g. `deepseek`, `deepseek-v4.*`, `deepseek/.*`) |
 | `providers` | `string[]` | `[]` | Optional list of provider IDs. When empty, guards all providers |
+| `cleanThinkArtifacts` | `boolean` | `false` | Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed reasoning blocks |
 | `providerId` | `string` | `undefined` | *(Deprecated)* Legacy exact provider identifier; maintained for backward compatibility |
 | `modelId` | `string` | `undefined` | *(Deprecated)* Legacy exact model identifier; maintained for backward compatibility |
 
@@ -173,6 +97,8 @@ dsh-dsml-artifact-guard:
 
 | Method | Endpoint | Access | Description |
 |:---|:---|:---|:---|
+| `GET` | `/api/dsh-dsml-artifact-guard/stats` | Web UI / Localhost | Retrieves live in-memory telemetry and recent incident history |
+| `POST` | `/api/dsh-dsml-artifact-guard/stats` | Loopback & Same-Origin | Resets telemetry counters and clears the recent incident log |
 | `GET` | `/api/dsh-dsml-artifact-guard/update` | Web UI / Localhost | Retrieves current version, latest registry version, and update status |
 | `POST` | `/api/dsh-dsml-artifact-guard/update` | Loopback & Same-Origin | Triggers in-place package update via DSH CLI |
 
@@ -180,7 +106,7 @@ dsh-dsml-artifact-guard:
 
 ## 🧪 Testing
 
-Run the automated test suite covering split chunks, audit vs sanitize modes, scope matching, and synchronous hook contracts:
+Run the automated test suite:
 
 ```bash
 npm test
@@ -192,7 +118,3 @@ npm run check
 ## 📄 License
 
 MIT © [GooDAnDReaDY](https://github.com/GooDAnDReaDY)
-
----
-
-For a complete release history and version migration notes, see [CHANGELOG.md](CHANGELOG.md).
