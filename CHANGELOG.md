@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.15] - 2026-11-10
+
+### Fixed
+- **DSH Stream Block-End Sanitization**: in `lib/index.js`, sanitize trailing DSML protocol tags and reasoning artifacts on `block-end` chunks for text blocks, and sanitize `block.text` inside the `block-end` payload so DSH kernel persists and renders clean text (#71).
+- **Repository Package Lock**: removed `package-lock.json` from `.gitignore` and committed `package-lock.json` to ensure deterministic builds and clean `npm ci && npm test` runs from a fresh clone (#72).
+- **Telemetry Host & Auth Validation**: in `lib/telemetry.js`, implemented `isTrustedTelemetryRequest` verifying DSH core connection authentication (`connection.requestRejection`) and validating Host, Origin, and Loopback/LAN headers (rejecting external hosts and DNS rebinding with 403) (#73).
+
 ## [0.2.14] - 2026-11-05
 
 ### Added
