@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.16] - 2026-11-12
+
+### Added
+- **Project Governance & Deploy Layer**: added `AGENTS.md`, `index.md`, `deploy.sh`, and `.gitattributes` (`export-ignore`), removed `AGENTS.md` from `.gitignore`, and kept `scripts/publish-github.sh` excluding internal workflow/docs files (#75).
+- **Unified Request Trust Module**: extracted `lib/request-trust.js` (`isTrustedRequest`, `isLoopback`, `isPrivateLan`, `getConnection`) shared across `/stats` and `/update` endpoints (#76).
+
+### Fixed
+- **Updater Auth & GET/POST Hardening**: secured `GET`/`HEAD`/`POST /api/dsh-dsml-artifact-guard/update` through `isTrustedRequest` with DSH `connection.requestRejection` verification, fail-closed loopback/LAN fallback, and case-insensitive `Origin`/`Host` validation (#76).
+- **Streaming Orphan `</think>` & Reasoning Block Guard**: tracked `<think>` nesting depth during delta emission so orphan `</think>` tags are stripped even on responses exceeding the `KEEP = 96` sliding window, synchronized `block-end` text, guarded `block-end` against touching `reasoning` blocks, removed `.test()` calls on `/g` regexes, deduplicated tail sanitization via `sanitizeTailArtifacts`, and preserved `removed: 0` in `recordArtifact` for `think-repair` (#77).
+- **Client Version Sync, Loading Label & UX Polish**: updated `FALLBACK_VERSION` in `lib/client.js` to match `package.json` (`0.2.16`), added distinct `loading` i18n text instead of showing `Saving…`, fixed `{ updated: false }` updater notice and telemetry reset error feedback, added `role="button"`/`aria-expanded` keyboard navigation on the card header, cleaned up save timers on unmount, and compacted `lib/client.js` below 600 lines (#78).
+
 ## [0.2.15] - 2026-11-10
 
 ### Fixed
