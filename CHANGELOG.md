@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.17] - 2026-11-17
+
+### Added
+- **Packaging Metadata & Optional WebServer**: added `engines` (`>=18.0.0`), `repository`, `homepage`, `bugs`, `keywords` to `package.json`; made `webServer` optional in `lib/index.js` via dynamic registration; removed cyclic imports by hosting `checkRequestMethod` in `lib/request-trust.js`; and added version synchronization tests (#90).
+- **Comprehensive Updater DI & Property Fuzzing Tests**: introduced dependency injection (`spawnFn`, `fetchFn`) in updater unit tests covering success, failure, timeout, 4xx/5xx responses; added property-based fuzz tests verifying tag balance invariants across chunk splits (#89).
+
+### Fixed
+- **Telemetry Counters Overhaul**: separated `totalDetected` and `totalCleaned` counters in `lib/telemetry.js`; ensured audit mode only increments `totalDetected`; counted `sessionsGuarded` strictly once per stream finish; prevented `think-repair` with `removed: 0` from inflating `totalCleaned` (#80).
+- **Mid-Stream DSML Leak Removal & Global Balance Tracking**: stream tokenizer now detects and strips orphan DSML closing tags mid-stream while strictly preserving fail-open guarantees for matching tags, code fences, and inline code across multiple blocks (#81).
+- **Hardened Reasoning Cleaner**: strict `THINK_TOKEN` matching prevents false positives on natural prose expressions (e.g. `<think about it>`); preserved balanced `<think>...</think>` tags; deferred unclosed `<think>` auto-close to stream finish rather than intermediate `block-end` (#82).
+- **Mutating Route Loopback Enforcement**: mutating `POST /update` route strictly requires loopback address (`127.0.0.1` / `::1`) even when core connection auth is present; logs update attempts to `ctx.logger`; `deploy.sh` pipes auth token via `curl -K -` (#84).
+- **Model Pattern RegExp Caching & Length Capping**: cached compiled RegExp for `modelPattern` in `matchesScope`; capped pattern length to 128 characters with graceful substring fallback to prevent catastrophic backtracking (#93).
+
 ## [0.2.16] - 2026-11-12
 
 ### Added
