@@ -90,6 +90,7 @@ dsh-dsml-artifact-guard:
 | `modelPattern` | `string` | `"deepseek"` | Case-insensitive RegExp matched against model IDs (e.g. `deepseek`, `deepseek-v4.*`, `deepseek/.*`) |
 | `providers` | `string[]` | `[]` | Optional list of provider IDs. When empty, guards all providers |
 | `cleanThinkArtifacts` | `boolean` | `false` | Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed reasoning blocks |
+| `showTelemetry` | `boolean` | `true` | Controls visibility of the Activity & Telemetry dashboard in the settings card |
 | `providerId` | `string` | `undefined` | *(Deprecated)* Legacy exact provider identifier; maintained for backward compatibility |
 | `modelId` | `string` | `undefined` | *(Deprecated)* Legacy exact model identifier; maintained for backward compatibility |
 
@@ -101,6 +102,14 @@ dsh-dsml-artifact-guard:
 | `POST` | `/api/dsh-dsml-artifact-guard/stats` | Loopback & Same-Origin | Resets telemetry counters and clears the recent incident log |
 | `GET` | `/api/dsh-dsml-artifact-guard/update` | Web UI / Localhost | Retrieves current version, latest registry version, and update status |
 | `POST` | `/api/dsh-dsml-artifact-guard/update` | Loopback & Same-Origin | Triggers in-place package update via DSH CLI |
+
+---
+
+## 🖼️ Visual verification
+
+![DSML Artifact Guard Settings Card](media/visual-verification.png)
+
+The settings card provides real-time status of the guard, operating mode controls, live telemetry dashboard with incident history, accessible form inputs, and one-click in-place updates.
 
 ---
 

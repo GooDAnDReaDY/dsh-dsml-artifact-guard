@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.18] - 2026-11-17
+
+### Added
+- **UI Error States & Distinct Updater Statuses**: stored `canAutoUpdate` and `latestCheckFailed` in card state; rendered four distinct updater states (`updateAvailable`, `updateAvailableNoAuto`, `upToDate`, `upToDateManual`); added confirmation prompt for "Update Now" and double-click guards preventing multiple parallel installations (#83).
+- **Accessibility & Focus-Visible Styles**: added explicit `id` and `htmlFor` association to all form controls; added `aria-controls` and `id` linking card header to body; injected focus-visible outlines derived from theme tokens; added `prefers-reduced-motion` to disable chevron rotation animation (#86).
+- **Telemetry Dashboard Controls & Privacy**: added `showTelemetry` schema toggle (default `true`) allowing users to show/hide the telemetry dashboard; added manual "Refresh" button and last-polled timestamp; enabled 15s polling when expanded; updated `en` and `zh` localization dictionaries (#87).
+- **Quality Gate & Zero-Dependency Linter**: introduced `bestEffort(label, fn)` helper eliminating empty catch blocks without diagnostics; added `scripts/lint.js` to `npm run check` verifying no empty catches, no hardcoded colors, no prohibited locales, line limits, and version consistency (#88).
+- **Release Hygiene & Visual Verification**: added explicit `* text=auto eol=lf` and `*.sh text eol=lf` to `.gitattributes`; preserved `755` executable permissions for shell scripts; generated `media/visual-verification.png` and documented card UI in `README.md` under `## Visual verification`; mirrored image to GitHub (#91).
+- **Desktop Scheme Safety & Network Error Handling**: added `resolveApiUrl(path)` checking `window.__DSH_API_BASE__` for safe custom scheme resolution; surfaced network and HTTP error responses directly in UI cards rather than discarding them (#92).
+
+### Fixed
+- **Legacy Scope Matching OR-Semantics**: updated `matchesScope` in `lib/index.js` to apply legacy `providerId` / `modelId` matching using OR-semantics when either is set; updated card UI text and added a clear button to remove legacy fields (#85).
+
 ## [0.2.17] - 2026-11-17
 
 ### Added

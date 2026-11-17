@@ -1,6 +1,6 @@
 {
   "name": "@goodandready/dsh-dsml-artifact-guard",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "description": "Sanitizes leaked DeepSeek DSML closing tags and reasoning artifacts from model text streams",
   "type": "module",
   "main": "lib/index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GooDAnDReaDY/dsh-dsml-artifact-guard.git"
+    "url": "git+https://github.com/GooDAnDReaDY/dsh-dsml-artifact-guard.git"
   },
   "homepage": "https://github.com/GooDAnDReaDY/dsh-dsml-artifact-guard#readme",
   "bugs": {
@@ -34,7 +34,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "check": "node --check lib/index.js lib/client.js lib/telemetry.js lib/updater.js lib/request-trust.js",
+    "check": "node --check lib/index.js lib/client.js lib/telemetry.js lib/updater.js lib/request-trust.js && node scripts/lint.js",
     "test": "node --test"
   },
   "dsh": {
@@ -64,3 +64,4 @@
     "@deepseek-ai/schemastery": "^3.18.4"
   }
 }
+

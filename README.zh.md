@@ -104,6 +104,14 @@ dsh-dsml-artifact-guard:
 
 ---
 
+## 🖼️ 视觉验证
+
+![DSML Artifact Guard Settings Card](media/visual-verification.png)
+
+设置卡片提供守卫运行状态、运行模式切换、活动与遥测仪表盘及拦截记录、无障碍表单控件以及一键式就地升级。
+
+---
+
 ## 🧪 测试与校验
 
 运行全部自动化测试与语法检查：
