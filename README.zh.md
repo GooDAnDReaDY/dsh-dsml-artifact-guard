@@ -69,6 +69,13 @@ dsh plugin --profile web add @goodandready/dsh-dsml-artifact-guard
 
 ---
 
+## ✅ 运行要求
+
+- Node.js 20 或更高版本。
+- DeepSeek Harness `>=0.1.7`，需支持同步 `llm/stream` 钩子与 SettingsForms。
+
+---
+
 ## ⚙️ 配置指南 (`settings.yaml`)
 
 在 `settings.yaml` 或 Web UI 设置面板中配置规则：
@@ -80,6 +87,7 @@ dsh-dsml-artifact-guard:
   modelPattern: "deepseek"
   providers: []
   cleanThinkArtifacts: false
+  showTelemetry: true
 ```
 
 ### 配置参数参考表
@@ -90,6 +98,7 @@ dsh-dsml-artifact-guard:
 | `modelPattern` | `string` | `"deepseek"` | 不区分大小写的模型正则匹配式（默认：`"deepseek"`） |
 | `providers` | `string[]` | `[]` | 目标服务商列表。为空时防护全部服务商 |
 | `cleanThinkArtifacts` | `boolean` | `false` | 剥除游离 `</think>` 标签、末端思维标记并修复未闭合思维块 |
+| `showTelemetry` | `boolean` | `true` | 是否在设置卡片中显示活动与遥测仪表盘 |
 | `providerId` | `string` | `undefined` | *(已弃用)* 目标服务商标识符；保留用于向后兼容 |
 | `modelId` | `string` | `undefined` | *(已弃用)* 目标模型标识符；保留用于向后兼容 |
 

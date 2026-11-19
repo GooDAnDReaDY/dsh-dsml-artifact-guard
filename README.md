@@ -69,6 +69,13 @@ Restart your DeepSeek Harness instance.
 
 ---
 
+## Requirements
+
+- Node.js 20 or newer.
+- DeepSeek Harness `>=0.1.7` with the synchronous `llm/stream` hook and SettingsForms support.
+
+---
+
 ## ⚙️ Configuration (`settings.yaml`)
 
 Configure matching rules in `settings.yaml` or through the Web UI Settings Card:
@@ -80,6 +87,7 @@ dsh-dsml-artifact-guard:
   modelPattern: "deepseek"
   providers: []
   cleanThinkArtifacts: false
+  showTelemetry: true
 ```
 
 ### Configuration Parameters
@@ -121,6 +129,8 @@ Run the automated test suite:
 npm test
 npm run check
 ```
+
+`npm run check` runs `node --check` over every runtime module and the project lint (empty catches, theme tokens, version sync, client size).
 
 ---
 

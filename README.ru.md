@@ -69,6 +69,13 @@ dsh plugin --profile web add @goodandready/dsh-dsml-artifact-guard
 
 ---
 
+## ✅ Требования
+
+- Node.js 20 или новее.
+- DeepSeek Harness `>=0.1.7` с синхронным хуком `llm/stream` и поддержкой SettingsForms.
+
+---
+
 ## ⚙️ Конфигурация (`settings.yaml`)
 
 Настройка параметров в `settings.yaml` или через веб-панель управления:
@@ -80,6 +87,7 @@ dsh-dsml-artifact-guard:
   modelPattern: "deepseek"
   providers: []
   cleanThinkArtifacts: false
+  showTelemetry: true
 ```
 
 ### Таблица параметров конфигурации
@@ -90,6 +98,7 @@ dsh-dsml-artifact-guard:
 | `modelPattern` | `string` | `"deepseek"` | Case-insensitive регулярное выражение для фильтрации моделей (например, `deepseek`, `deepseek-v4.*`) |
 | `providers` | `string[]` | `[]` | Список разрешённых ID провайдеров. Если пуст — фильтруются все провайдеры |
 | `cleanThinkArtifacts` | `boolean` | `false` | Очистка сиротливых `</think>`, концевых маркеров reasoning и починка незакрытых блоков |
+| `showTelemetry` | `boolean` | `true` | Отображение дашборда Activity & Telemetry в карточке настроек |
 | `providerId` | `string` | `undefined` | *(Устарело)* Идентификатор целевого провайдера; сохранено для обратной совместимости |
 | `modelId` | `string` | `undefined` | *(Устарело)* Идентификатор целевой модели; сохранено для обратной совместимости |
 

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.19] - 2026-11-19
+
+### Fixed
+- **Production Updater Profile Detection**: restored `dsh web` subcommand mapping, `DSH_PROFILE_DIR` support, `cordis.yml` / `cordis.patch.yml` cwd detection without requiring `package.json`, strict `@deepseek-ai/dsh` CLI entry validation, and a clear error when the target profile directory is missing (#96).
+- **Theme Token Regression**: replaced the missing `--dsw-alias-bg-control` and `--dsw-alias-label-on-brand` tokens with `--dsw-alias-bg-field` / `--dsw-alias-bg-layer-2` and `--dsw-alias-label-on-color`, restoring field backgrounds and button text contrast (#97).
+- **Style Isolation & Accessibility**: added `data-dsh-plugin` to the injected style tag with ref-counted cleanup, per-instance DOM ids for headers, bodies and fields, and kept the collapsed body in the DOM so `aria-controls` always resolves (#98).
+- **Telemetry UI Counters**: display `totalDetected` alongside `totalCleaned`, separate poll errors from reset errors, and clear load errors after a successful refresh (#80).
+- **Quality Gates & Packaging**: lint now verifies version sync across docs and rejects theme tokens missing from DSH core; `media/visual-verification.png` is included in the npm package; `engines.node` aligned with the documented Node 20+ requirement (#88, #91).
+- **Host Compatibility Metadata**: declared `engines.dsh` and added a Requirements section to the README trio so the market index and users can see the supported host version (#90, #91).
+
 ## [0.2.18] - 2026-11-17
 
 ### Added
