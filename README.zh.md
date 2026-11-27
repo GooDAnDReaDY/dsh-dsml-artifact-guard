@@ -44,6 +44,8 @@
 </｜DSML｜parameter> </｜DSML｜invoke> </｜DSML｜tool_calls>
 ```
 
+匹配器支持标签内的水平空格、`calls` / `tool-calls` 别名以及 ASCII 竖线 `|`，因此同一模型家族产生的变体同样会被清理。
+
 此外，推理模型（如 DeepSeek-R1 / V3）在异常中断时可能残留游离的 `</think>` 标签、末端标记或未闭合的思维块，破坏 Markdown 排版。
 
 **`@goodandready/dsh-dsml-artifact-guard`** 实时拦截并清洗这些协议残留物：
@@ -86,6 +88,7 @@ dsh-dsml-artifact-guard:
   mode: sanitize
   modelPattern: "deepseek"
   providers: []
+  customTokens: []
   cleanThinkArtifacts: false
   showTelemetry: true
 ```
@@ -97,6 +100,7 @@ dsh-dsml-artifact-guard:
 | `mode` | `string` | `"sanitize"` | 运行模式：`"sanitize"`（清洗标签）、`"audit"`（仅审计）或 `"disabled"` |
 | `modelPattern` | `string` | `"deepseek"` | 不区分大小写的模型正则匹配式（默认：`"deepseek"`） |
 | `providers` | `string[]` | `[]` | 目标服务商列表。为空时防护全部服务商 |
+| `customTokens` | `string[]` | `[]` | 附加字面量标记：仅在代码块与行内代码之外移除（每个 2–64 个字符，最多 32 个），例如 `<|im_end|>`、`[TOOL_CALLS]`、`<|eot_id|>` |
 | `cleanThinkArtifacts` | `boolean` | `false` | 剥除游离 `</think>` 标签、末端思维标记并修复未闭合思维块 |
 | `showTelemetry` | `boolean` | `true` | 是否在设置卡片中显示活动与遥测仪表盘 |
 | `providerId` | `string` | `undefined` | *(已弃用)* 目标服务商标识符；保留用于向后兼容 |

@@ -44,6 +44,8 @@
 </｜DSML｜parameter> </｜DSML｜invoke> </｜DSML｜tool_calls>
 ```
 
+Матчер допускает горизонтальные пробелы внутри тега, алиасы `calls` / `tool-calls` и ASCII-бар `|`, поэтому варианты, которые выдаёт то же семейство моделей, тоже очищаются.
+
 Кроме того, reasoning-модели (например, DeepSeek-R1 / V3) или обрывы сетевых сессий могут оставлять сиротливые теги `</think>`, концевые маркеры (`<｜end of sentence｜>`) или незакрытые блоки размышлений, ломающие вёрстку Markdown.
 
 **`@goodandready/dsh-dsml-artifact-guard`** — легковесный плагин времени выполнения для DeepSeek Harness, перехватывающий и удаляющий эти паразитные терминальные артефакты в реальном времени до того, как текст попадёт в интерфейс:
@@ -86,6 +88,7 @@ dsh-dsml-artifact-guard:
   mode: sanitize
   modelPattern: "deepseek"
   providers: []
+  customTokens: []
   cleanThinkArtifacts: false
   showTelemetry: true
 ```
@@ -97,6 +100,7 @@ dsh-dsml-artifact-guard:
 | `mode` | `string` | `"sanitize"` | Режим работы: `"sanitize"` (удалять теги), `"audit"` (только логировать) или `"disabled"` |
 | `modelPattern` | `string` | `"deepseek"` | Case-insensitive регулярное выражение для фильтрации моделей (например, `deepseek`, `deepseek-v4.*`) |
 | `providers` | `string[]` | `[]` | Список разрешённых ID провайдеров. Если пуст — фильтруются все провайдеры |
+| `customTokens` | `string[]` | `[]` | Дополнительные литеральные маркеры, удаляемые вне code fence и inline code (2–64 символа, максимум 32 шт.), например `<|im_end|>`, `[TOOL_CALLS]`, `<|eot_id|>` |
 | `cleanThinkArtifacts` | `boolean` | `false` | Очистка сиротливых `</think>`, концевых маркеров reasoning и починка незакрытых блоков |
 | `showTelemetry` | `boolean` | `true` | Отображение дашборда Activity & Telemetry в карточке настроек |
 | `providerId` | `string` | `undefined` | *(Устарело)* Идентификатор целевого провайдера; сохранено для обратной совместимости |

@@ -44,6 +44,8 @@ Response completed successfully.
 </｜DSML｜parameter> </｜DSML｜invoke> </｜DSML｜tool_calls>
 ```
 
+The matcher tolerates horizontal whitespace inside the tag, the `calls` / `tool-calls` aliases and the ASCII `|` bar, so variants emitted by the same model family are cleaned as well.
+
 Additionally, reasoning models (such as DeepSeek-R1 / V3) or interrupted network streams can leave orphan `</think>` tags, dangling tokens (`<｜end of sentence｜>`), or unclosed thinking blocks that corrupt markdown rendering.
 
 **`@goodandready/dsh-dsml-artifact-guard`** is a high-performance runtime guard for DeepSeek Harness that cleans these protocol artifacts in real time before they reach the user interface:
@@ -86,6 +88,7 @@ dsh-dsml-artifact-guard:
   mode: sanitize
   modelPattern: "deepseek"
   providers: []
+  customTokens: []
   cleanThinkArtifacts: false
   showTelemetry: true
 ```
@@ -97,6 +100,7 @@ dsh-dsml-artifact-guard:
 | `mode` | `string` | `"sanitize"` | Operation mode: `"sanitize"` (strip tags), `"audit"` (log only), or `"disabled"` |
 | `modelPattern` | `string` | `"deepseek"` | Case-insensitive RegExp matched against model IDs (e.g. `deepseek`, `deepseek-v4.*`, `deepseek/.*`) |
 | `providers` | `string[]` | `[]` | Optional list of provider IDs. When empty, guards all providers |
+| `customTokens` | `string[]` | `[]` | Additional literal tokens stripped from text outside code fences and inline code (2–64 characters each, max 32 tokens), e.g. `<|im_end|>`, `[TOOL_CALLS]`, `<|eot_id|>` |
 | `cleanThinkArtifacts` | `boolean` | `false` | Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed reasoning blocks |
 | `showTelemetry` | `boolean` | `true` | Controls visibility of the Activity & Telemetry dashboard in the settings card |
 | `providerId` | `string` | `undefined` | *(Deprecated)* Legacy exact provider identifier; maintained for backward compatibility |

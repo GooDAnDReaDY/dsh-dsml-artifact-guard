@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.20] - 2026-11-26
+
+### Added
+- **Custom Literal Token Guard**: added `customTokens` (2–64 characters each, max 32 tokens) to strip user-defined literal artifacts such as `<|im_end|>`, `[TOOL_CALLS]` or `<|eot_id|>` from text streams, keeping code fences and inline code intact via fail-open (#105).
+- **ESLint Quality Gate**: `npm run check` now runs ESLint with `no-undef`, `no-unused-vars`, `no-empty` and related correctness rules across `lib`, `scripts` and `test` (#88).
+- **Desktop API Base Verification**: `resolveApiUrl` is exported and covered by a behavior test; DESIGN.md documents that DSH Desktop resolves relative `/api/...` URLs against `document.baseURI`, with `__DSH_API_BASE__` as an optional override (#92).
+
+### Fixed
+- **DSML Variant Recognition**: `CLOSE_TAG`, `DSML_CLUSTER` and `INCOMPLETE_TAIL` now accept horizontal whitespace inside the markers, the ASCII bar `|`, and the `calls` / `tool-calls` aliases, so the shapes observed in real `deepseek-v4-flash` sessions no longer reach the UI; fail-open, code fences and inline code are unchanged (#108, GitHub mirror #1).
+
 ## [0.2.19] - 2026-11-19
 
 ### Fixed
