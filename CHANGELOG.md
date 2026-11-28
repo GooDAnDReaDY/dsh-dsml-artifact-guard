@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.21] - 2026-11-27
+
+### Added
+- **Reasoning Salvage (`salvageReasoning`)**: new schema option (default `false`, also exposed as a checkbox in the settings card) for models that write their thinking into the `content` channel instead of the reasoning channel. When enabled, the leaked think / thinking / reasoning span is moved out of the answer text into a reasoning block, so the visible reply reads clean; code fences and inline code are left untouched (fail-open). Because the answer channel is rewritten, the response's `replayState` is discarded for that turn, so the altered answer is never replayed from the pre-rewrite transcript. Ported from community PR #2, thanks @free6589.
+
+### Fixed
+- **Reasoning Salvage hardening**: inline code stays fail-open alongside code fences; a `block-start` without `blockType` is treated as text so no empty text block remains; the telemetry callback no longer uses an empty catch; the test suite runs on Node 20 without module hooks.
+
 ## [0.2.20] - 2026-11-26
 
 ### Added

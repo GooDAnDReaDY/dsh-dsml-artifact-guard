@@ -54,8 +54,9 @@
 2. **分片边界滑动窗口**：通过 96 字节滑动窗口完整捕获跨网络分片截断的闭合标签。
 3. **连接异常中断残缺清理**：流收到 `finish` 信号时自动剥离残缺的协议前缀（如 `</｜DSML｜...`）。
 4. **思维链标记防护 (`cleanThinkArtifacts`)**：清理孤立的 `</think>` 标签、末端思维标记，并在流中断时自动修复未闭合的思维块。
-5. **标签平衡与故障开放**：追踪开闭标签平衡，技术讨论中的合法 DSML 样例绝不被误删。
-6. **实时遥测与拦截统计面板**：在 Web UI 设置卡片中直观展示已防护应答数、剥除标签数、最近拦截记录与重置操作。
+5. **思考迁移 (`salvageReasoning`)**：模型把思考过程写进正文而不是 reasoning 通道时，将这一段搬进 reasoning 区块，正文回复保持干净；代码围栏与行内代码不动。默认关闭。
+6. **标签平衡与故障开放**：追踪开闭标签平衡，技术讨论中的合法 DSML 样例绝不被误删。
+7. **实时遥测与拦截统计面板**：在 Web UI 设置卡片中直观展示已防护应答数、剥除标签数、最近拦截记录与重置操作。
 
 ---
 
@@ -90,6 +91,7 @@ dsh-dsml-artifact-guard:
   providers: []
   customTokens: []
   cleanThinkArtifacts: false
+  salvageReasoning: false
   showTelemetry: true
 ```
 
@@ -102,6 +104,7 @@ dsh-dsml-artifact-guard:
 | `providers` | `string[]` | `[]` | 目标服务商列表。为空时防护全部服务商 |
 | `customTokens` | `string[]` | `[]` | 附加字面量标记：仅在代码块与行内代码之外移除（每个 2–64 个字符，最多 32 个），例如 `<|im_end|>`、`[TOOL_CALLS]`、`<|eot_id|>` |
 | `cleanThinkArtifacts` | `boolean` | `false` | 剥除游离 `</think>` 标签、末端思维标记并修复未闭合思维块 |
+| `salvageReasoning` | `boolean` | `false` | 模型把思考写进正文时，将这段内容迁到 reasoning 通道，正文不再夹杂推理；代码围栏与行内代码内的内容原样保留。默认关闭 |
 | `showTelemetry` | `boolean` | `true` | 是否在设置卡片中显示活动与遥测仪表盘 |
 | `providerId` | `string` | `undefined` | *(已弃用)* 目标服务商标识符；保留用于向后兼容 |
 | `modelId` | `string` | `undefined` | *(已弃用)* 目标模型标识符；保留用于向后兼容 |
