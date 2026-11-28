@@ -54,8 +54,9 @@ Additionally, reasoning models (such as DeepSeek-R1 / V3) or interrupted network
 2. **Chunk Boundary Buffer**: Uses a 96-byte sliding window to reliably intercept closing tags fragmented across network packet boundaries.
 3. **Incomplete Token Recovery at Finish**: Detects and strips truncated protocol closing prefixes (`</｜DSML｜...`) when connections terminate abruptly.
 4. **Reasoning Artifact Protection (`cleanThinkArtifacts`)**: Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed `<think>` blocks at stream finish.
-5. **Fail-Open Tag Balancing**: Tracks open and closed tags to guarantee that legitimate technical discussions containing DSML or think examples are never altered.
-6. **Live Telemetry & Metrics Dashboard**: Real-time in-memory counters (guarded sessions, stripped tags, last incident time, and recent events log) available directly in the native Web UI card.
+5. **Reasoning Salvage (`salvageReasoning`)**: When the model writes its thinking into the answer text instead of the reasoning channel, moves that span into a reasoning block so the visible reply stays clean; code fences are left alone. Off by default.
+6. **Fail-Open Tag Balancing**: Tracks open and closed tags to guarantee that legitimate technical discussions containing DSML or think examples are never altered.
+7. **Live Telemetry & Metrics Dashboard**: Real-time in-memory counters (guarded sessions, stripped tags, last incident time, and recent events log) available directly in the native Web UI card.
 
 ---
 
@@ -90,6 +91,7 @@ dsh-dsml-artifact-guard:
   providers: []
   customTokens: []
   cleanThinkArtifacts: false
+  salvageReasoning: false
   showTelemetry: true
 ```
 
@@ -102,6 +104,7 @@ dsh-dsml-artifact-guard:
 | `providers` | `string[]` | `[]` | Optional list of provider IDs. When empty, guards all providers |
 | `customTokens` | `string[]` | `[]` | Additional literal tokens stripped from text outside code fences and inline code (2–64 characters each, max 32 tokens), e.g. `<|im_end|>`, `[TOOL_CALLS]`, `<|eot_id|>` |
 | `cleanThinkArtifacts` | `boolean` | `false` | Strips orphan `</think>` tags, removes trailing reasoning markers, and heals unclosed reasoning blocks |
+| `salvageReasoning` | `boolean` | `false` | Move leaked reasoning spans out of the answer channel into a reasoning block (default: `false`); spans inside code fences are left untouched |
 | `showTelemetry` | `boolean` | `true` | Controls visibility of the Activity & Telemetry dashboard in the settings card |
 | `providerId` | `string` | `undefined` | *(Deprecated)* Legacy exact provider identifier; maintained for backward compatibility |
 | `modelId` | `string` | `undefined` | *(Deprecated)* Legacy exact model identifier; maintained for backward compatibility |

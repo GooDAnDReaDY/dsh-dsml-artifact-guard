@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Reasoning Salvage (`salvageReasoning`)**: new schema option (default `false`, also exposed as a checkbox in the settings card) for models that write their thinking into the `content` channel instead of the reasoning channel. When enabled, the leaked think / thinking / reasoning span is moved out of the answer text into a reasoning block, so the visible reply reads clean; code fences and inline code are left untouched (fail-open). Because the answer channel is rewritten, the response's `replayState` is discarded for that turn, so the altered answer is never replayed from the pre-rewrite transcript.
+
 ## [0.2.20] - 2026-11-26
 
 ### Added
